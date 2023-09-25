@@ -20,6 +20,7 @@
 
     ```
     mvn clean package 
+    mvn clean package  -DskipTests 
     ```
 
 - 컨테이너 생성

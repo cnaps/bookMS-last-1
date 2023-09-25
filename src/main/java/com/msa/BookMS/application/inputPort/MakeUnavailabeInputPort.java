@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,10 +18,16 @@ public class MakeUnavailabeInputPort implements MakeUnavailableUsecase {
     private final BookOutPort bookOutPort;
 
     public BookOutPutDTO makeUnavailable(long bookNo){
-        Book loadBook = bookOutPort.loadBook(bookNo);
-        Book makeUnavailabeBook = loadBook.makeUnavailabe();
-        Book saved = bookOutPort.save(makeUnavailabeBook);
-        return BookOutPutDTO.mapToDTO(saved);
+       try {
+           Optional<Book> loadBook = bookOutPort.loadBook(bookNo)
+                   .map(book -> book.makeUnavailabe());
+           //Book saved = bookOutPort.save(makeUnavailabeBook);
+           return BookOutPutDTO.mapToDTO(loadBook.get());
+       }
+       catch (IllegalArgumentException e)
+       {
+           throw e;
+       }
     }
 
 }

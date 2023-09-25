@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -26,9 +28,8 @@ public class BookController {
 
     @GetMapping("/book/{no}")
     public ResponseEntity<BookOutPutDTO> getBookByNo(@PathVariable("no") String no){
-        BookOutPutDTO bookInfo = inquiryUsecase.getBookInfo(Long.parseLong(no));
-        return bookInfo != null
-                ? new ResponseEntity<>(bookInfo,HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+        return inquiryUsecase.getBookInfo(Long.parseLong(no))
+                .map(book -> new ResponseEntity<>(book,HttpStatus.OK))
+                .orElseGet(()-> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+         }
 }

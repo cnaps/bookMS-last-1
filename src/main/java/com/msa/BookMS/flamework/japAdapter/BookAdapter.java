@@ -5,14 +5,16 @@ import com.msa.BookMS.domin.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Repository
 public class BookAdapter implements BookOutPort {
 
     private final BookRepository bookRepository;
     @Override
-    public Book loadBook(long bookNo) {
-        return bookRepository.findById(bookNo).get();
+    public Optional<Book> loadBook(long bookNo) {
+        return Optional.of(bookRepository.findById(bookNo).get());
     }
 
     @Override

@@ -56,12 +56,14 @@ public class Book {
 
     public Book makeAvailable()
     {
-       this.setBookStatus(BookStatus.AVAILABLE);
-       return this;
+        if (this.getBookStatus().equals(BookStatus.AVAILABLE)) throw new IllegalArgumentException();
+        this.setBookStatus(BookStatus.AVAILABLE);
+        return this;
     }
 
     public Book makeUnavailabe()
     {
+        if (this.getBookStatus().equals(BookStatus.UNAVAILABLE)) throw new IllegalArgumentException();
         this.setBookStatus(BookStatus.UNAVAILABLE);
         return this;
     }
